@@ -1,4 +1,4 @@
-from utilities.sms_preprocessor import SmsPreprocessor
+from utils.sms_preprocessor import SmsPreprocessor
 
 
 def test_pre_processor_create_key_word_map():
@@ -14,3 +14,4 @@ def test_pre_processor_tokenizer():
     text = "Hello my dear friend. My brother told me."
     tokenized = pr.tokenize(text)
     expected = [1, 2, 3, 4, 2, 5, 6, 7]
+    assert tokenized == expected 
