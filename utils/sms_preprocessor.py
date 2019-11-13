@@ -44,12 +44,13 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
         return key_word_map
 
 
-    def tokenize(self, text, key_word_map={}, strategy="unknow"):
+    def tokenize(self, text, key_word_map=None, strategy="unknown"):
+        #TODO: add other strategies 
         tokenized = []
         text = self.preprocess(text)
-        if key_word_map is {}:
+        if key_word_map is None:
             key_word_map = self.create_key_word_dict(text)
-         
+        print(key_word_map)         
         for word in text.split():
             if word in key_word_map.keys():
                 token = key_word_map.get(word)
