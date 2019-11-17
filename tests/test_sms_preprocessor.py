@@ -17,12 +17,6 @@ def test_preprocessor_create_key_word_map(test_input, expected):
     assert key_word_map == expected 
 
 
-def test_preprocessor_preprocess():
-    pr = SmsPreprocessor(False)
-    text = "Hello what is going?! NOthing."
-    tokenized = pr.preprocess(text, False)
-    expected = 'hello what is going nothing'
-    assert tokenized == expected
 
 @pytest.mark.parametrize("test_input, expected", [
     (["hello is she", "you are good"], ["hello", "good"]),
