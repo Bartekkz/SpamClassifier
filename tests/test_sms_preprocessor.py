@@ -7,9 +7,9 @@ from utils.sms_preprocessor import SmsPreprocessor
 
 @pytest.mark.parametrize("test_input, expected ", [
     ("Hello my dear friend. My Friend told me", {"Hello": 1, "my": 2, "dear": 3, "friend.": 4,
-                                                 "My": 5, "Friend": 6, "told": 7, "me": 8}),
+                                                 "My": 5, "Friend": 6, "told": 7, "me": 8, "<unk>": 9}),
     (["Hello what Is going on What", "fuck what"], {"Hello": 1, "what": 2, "Is": 3, "going": 4,
-                                                    "on": 5, "What": 6, "fuck": 7})
+                                                    "on": 5, "What": 6, "fuck": 7, "<unk>": 8})
 ])
 def test_preprocessor_create_key_word_map(test_input, expected):
     pr = SmsPreprocessor(False)
