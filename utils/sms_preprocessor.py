@@ -109,7 +109,6 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
         tokenized = []
         if key_word_map is None:
             key_word_map = self.create_key_word_dict(text)
-        print(key_word_map)         
         if isinstance(text, str):
             for word in text.split():
                 if word in key_word_map.keys():
@@ -120,5 +119,11 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
                         tokenized.append("<unk>")
                     elif strategy == 'zeros':
                         tokenized.append(0)
-
-        return tokenized
+        for sent in text:
+            tokenized_text = []
+            for word in sent.split():
+                if word in key_word_map.keys():
+                    token = key_word_map.get(word)
+                    tokenized_text.append(token)
+            tokenized.append(tokenized_text)
+        return tokenized, key_word_map
