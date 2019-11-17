@@ -36,7 +36,7 @@ def test_preprocessor_remove_stopwords(test_input, expected):
 
 @pytest.mark.parametrize("test_input, expected, key_word_map", [
     ("Hello my dear friend. My borther told me", [1, 2, 3, 4, 5, 6, 7, 8], None),
-    ("hello what is going on. What?", [1, 2, 3, 4, 5, 6], {"hello": 1, "what": 2, "is": 3, "going": 4, "on.": 5, "What?": 6})
+    ("hello what is going on. What?", [1, 2, 3, 4, 5, 7], {"hello": 1, "what": 2, "is": 3, "going": 4, "on.": 5, "What": 6, "<unk>": 7})
 ])
 def test_preprocessor_tokenizer(test_input, expected, key_word_map):
     pr = SmsPreprocessor(False)
@@ -51,3 +51,17 @@ def test_preprocessor_clean_text(test_input, expected):
     pr = SmsPreprocessor(False)
     cleaned = pr.clean_text(test_input)
     assert cleaned == expected
+
+
+@pytest.mark.parametrize("test_input, expected", [
+    ("I was running and walking", "I wa run and walk"),
+    (["I was running and walking", "He was singing"], ["I wa run and walk", "He wa sing"])
+])
+def test_preprocessor_stemmer(test_input, expected):
+    from nltk.stem import PorterStemmer
+    ps = PorterStemmer()
+    pr = SmsPreprocessor(False)
+    stemmed = pr.stem_text(test_input)
+    assert stemmed == expected 
+    
+

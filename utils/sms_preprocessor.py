@@ -1,9 +1,11 @@
 import os
+import random
 from sklearn.pipeline import Pipeline
 from sklearn.base import BaseEstimator, TransformerMixin       
 import string 
 import nltk
 from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
 
 
 class SmsPreprocessor(BaseEstimator, TransformerMixin):
@@ -78,6 +80,7 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
                     continue 
                 key_word_map[word] = i 
                 i += 1
+        key_word_map["<unk>"] = i
         return key_word_map
 
 
@@ -116,14 +119,34 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
                     tokenized.append(token)
                 else:
                     if strategy == "unknown":
-                        tokenized.append("<unk>")
+                        token = key_word_map.get("<unk>")
+                        tokenized.append(token)
                     elif strategy == 'zeros':
                         tokenized.append(0)
+            return tokenized, key_word_map
         for sent in text:
             tokenized_text = []
             for word in sent.split():
                 if word in key_word_map.keys():
                     token = key_word_map.get(word)
                     tokenized_text.append(token)
+                else:
+                    if strategy == "unknown":
+                        token = key_word_map.get("<unk>")
+                        tokenized_text.append(token)
+                    elif strategy == 'zeros':
+                        tokenized_text.append(0)
             tokenized.append(tokenized_text)
         return tokenized, key_word_map
+    
+
+    def stem_text(self, text):
+        ps = PorterStemmer()
+        if isinstance(text, str):
+            text = ' '.join([ps.stem(word) for word in text.split()])
+            return text
+        stemmed = []
+        for sent in text:
+            stemmed_text = " ".join([ps.stem(word) for word in sent.split()])
+            stemmed.append(stemmed_text)
+        return stemmed
