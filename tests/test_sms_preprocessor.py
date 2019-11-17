@@ -40,7 +40,7 @@ def test_preprocessor_remove_stopwords(test_input, expected):
 ])
 def test_preprocessor_tokenizer(test_input, expected, key_word_map):
     pr = SmsPreprocessor(False)
-    tokenized = pr.tokenize(test_input, key_word_map=key_word_map)
+    tokenized, key_word_map = pr.tokenize(test_input, key_word_map=key_word_map)
     assert tokenized == expected 
 
 
