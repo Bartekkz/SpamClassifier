@@ -6,6 +6,7 @@ import string
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
+import pickle
 
 
 class SmsPreprocessor(BaseEstimator, TransformerMixin):
@@ -18,19 +19,20 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
         self.load = load
 
     
-    def preprocess(self, text, only_punctuation):
+    def preprocess(self, text):
         '''
         @params:
         - text: str
         @return:
         - text: str -> lowercased and without punctuation 
         '''
-        cleaned_text = self.clean_text(text, only_punctuation)
-        
-        return cleaned_text
+        text = self.clean_text(text)
+        text = self.remove_stopwords(text) 
+        text = self.stem_text(text)
+        return text 
 
 
-    def clean_text(self, text: [str], only_punctuation=False) -> [str]:
+    def clean_text(self, text: [str]) -> [str]:
         '''
         lowercase text and remove punctuation
 
@@ -41,9 +43,6 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
            - list of lowered strings(sentences) without punctuation
         '''
         if isinstance(text, str):
-            if only_punctuation:            
-                text = ''.join(v for v in text if v not in string.punctuation)
-                return text
             text = text.lower()
             text = ''.join(v for v in text if v not in string.punctuation)
             return text
@@ -51,37 +50,12 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
         for sent in text:
             cleaned_text = []
             for word in sent.split(): 
-                if only_punctuation:
-                    text = ''.join(v for v in word if v not in string.punctuation)
-                    cleaned_text.append(text)
-                else:
                     word = word.lower()
                     text = ''.join(v for v in word if v not in string.punctuation)
                     cleaned_text.append(text)                    
             cleaned_sent = " ".join([word for word in cleaned_text])
             final_text.append(cleaned_sent)
         return final_text 
-
-
-    def create_key_word_dict(self, text: [str]):
-        '''
-        Create dictionary of word, token pairs
-        @params:
-        - text: str or list(str)
-        - clean_text: bool -> lowercase text and remove punctuation
-        '''
-        key_word_map = {}
-        if isinstance(text, str):
-            text = [text]
-        i = 1 
-        for sentence in text:
-            for word in sentence.split(): 
-                if word in key_word_map.keys():
-                    continue 
-                key_word_map[word] = i 
-                i += 1
-        key_word_map["<unk>"] = i
-        return key_word_map
 
 
     def remove_stopwords(self, text):
@@ -105,39 +79,6 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
             sent = " ".join([word for word in cleaned_text])
             final_text.append(sent) 
         return final_text 
-
-
-    def tokenize(self, text, key_word_map=None, strategy="unknown"):
-        #TODO: add other strategies, change function
-        tokenized = []
-        if key_word_map is None:
-            key_word_map = self.create_key_word_dict(text)
-        if isinstance(text, str):
-            for word in text.split():
-                if word in key_word_map.keys():
-                    token = key_word_map.get(word)
-                    tokenized.append(token)
-                else:
-                    if strategy == "unknown":
-                        token = key_word_map.get("<unk>")
-                        tokenized.append(token)
-                    elif strategy == 'zeros':
-                        tokenized.append(0)
-            return tokenized, key_word_map
-        for sent in text:
-            tokenized_text = []
-            for word in sent.split():
-                if word in key_word_map.keys():
-                    token = key_word_map.get(word)
-                    tokenized_text.append(token)
-                else:
-                    if strategy == "unknown":
-                        token = key_word_map.get("<unk>")
-                        tokenized_text.append(token)
-                    elif strategy == 'zeros':
-                        tokenized_text.append(0)
-            tokenized.append(tokenized_text)
-        return tokenized, key_word_map
     
 
     def stem_text(self, text):
@@ -150,3 +91,30 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
             stemmed_text = " ".join([ps.stem(word) for word in sent.split()])
             stemmed.append(stemmed_text)
         return stemmed
+
+    
+    def transform(self, X, y=None):
+        path = 'data/tweets/pickled/processed_sms.pickle'
+        if self.load:
+            if os.path.exists(path):
+                print('Loading...')
+                print("PATH EXISTS")
+                with open(path, 'rb') as f:
+                    processed_sms = pickle.load(f)
+                    print('Done')
+            else:
+                print('Processing...') 
+                processed_sms = self.preprocess(X)
+                with open(path, 'wb') as f:
+                    pickle.dump(processed_sms, f)
+                    print('Done!')
+        else:
+            print('Processing...')
+            processed_sms = self.preprocess(X)
+            print('Done!')
+
+        return processed_sms
+
+
+    def fit(self, X, y=None):
+        return self
