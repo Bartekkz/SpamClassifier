@@ -34,7 +34,6 @@ def test_preprocessor_remove_stopwords(test_input, expected):
     assert cleaned_text == expected
     
 
-
 @pytest.mark.parametrize("test_input, expected, key_word_map", [
     ("Hello my dear friend. My borther told me", [1, 2, 3, 4, 5, 6, 7, 8], None),
     ("hello what is going on. What?", [1, 2, 3, 4, 5, 6], {"hello": 1, "what": 2, "is": 3, "going": 4, "on.": 5, "What?": 6})

@@ -116,6 +116,9 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
                     token = key_word_map.get(word)
                     tokenized.append(token)
                 else:
-                    tokenized.append("<unk>")
+                    if strategy == "unknown":
+                        tokenized.append("<unk>")
+                    elif strategy == 'zeros':
+                        tokenized.append(0)
 
         return tokenized
