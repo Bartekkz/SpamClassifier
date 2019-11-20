@@ -1,5 +1,4 @@
-import pytest
-import sys
+import pytest import sys
 sys.path.append('..')
 from utils.sms_preprocessor import SmsPreprocessor
 from utils.tokenizer import Tokenizer
@@ -73,4 +72,6 @@ def test_pipeline(test_input, expected):
     ])
     tokenized, key_word_map = pipeline.fit_transform(test_input)
     assert tokenized == expected
+
+
 
