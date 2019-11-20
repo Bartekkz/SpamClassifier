@@ -6,7 +6,6 @@ from sklearn.pipeline import Pipeline
 
 
 
-
 @pytest.mark.parametrize("test_input, expected ", [
     ("Hello my dear friend. My Friend told me", {"Hello": 1, "my": 2, "dear": 3, "friend.": 4,
                                                  "My": 5, "Friend": 6, "told": 7, "me": 8, "<unk>": 9}),
@@ -17,7 +16,6 @@ def test_preprocessor_create_key_word_map(test_input, expected):
     tk = Tokenizer()
     key_word_map = tk.create_key_word_dict(test_input) 
     assert key_word_map == expected 
-
 
 
 @pytest.mark.parametrize("test_input, expected", [
@@ -72,6 +70,3 @@ def test_pipeline(test_input, expected):
     ])
     tokenized, key_word_map = pipeline.fit_transform(test_input)
     assert tokenized == expected
-
-
-
