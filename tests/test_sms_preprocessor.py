@@ -3,6 +3,8 @@ import sys
 sys.path.append('..')
 from utils.sms_preprocessor import SmsPreprocessor
 from utils.tokenizer import Tokenizer
+from sklearn.pipeline import Pipeline
+
 
 
 
@@ -59,4 +61,16 @@ def test_preprocessor_stemmer(test_input, expected):
     stemmed = pr.stem_text(test_input)
     assert stemmed == expected 
     
+
+@pytest.mark.parametrize("test_input, expected", [
+    ("hello what is going on", [1, 2]),
+    (["hello what", "is going on"], [[1], [2]])
+])
+def test_pipeline(test_input, expected):
+    pipeline = Pipeline([
+        ("preprocessor", SmsPreprocessor(False)),
+        ("tokenizer", Tokenizer())
+    ])
+    tokenized, key_word_map = pipeline.fit_transform(test_input)
+    assert tokenized == expected
 
