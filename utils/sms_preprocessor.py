@@ -10,11 +10,7 @@ import pickle
 
 
 class SmsPreprocessor(BaseEstimator, TransformerMixin):
-    #TODO: 
-    ''' 
-    UPDATE docs
-    helper class to clean sms messages, tokenizer them
-    '''
+    #TODO: Update docs
     def __init__(self, load):
         self.load = load
 
