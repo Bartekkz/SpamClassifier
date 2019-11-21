@@ -6,38 +6,42 @@ from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class Tokenizer(BaseEstimator, TransformerMixin):
+    def __init__(self, key_word_map=None):
+        self.key_word_map = key_word_map
 
-    def tokenize(self, text, key_word_map=None, strategy="unknown"):
+    
+    def tokenize(self, text, strategy="unknown"):
         #TODO: add other strategies, change function
         tokenized = []
-        if key_word_map is None:
-            key_word_map = self.create_key_word_dict(text)
+        #TODO: change type of initing key_word_map
+        if self.key_word_map is None:
+            self.key_word_map = self.create_key_word_dict(text)
         if isinstance(text, str):
             for word in text.split():
-                if word in key_word_map.keys():
-                    token = key_word_map.get(word)
+                if word in self.key_word_map.keys():
+                    token = self.key_word_map.get(word)
                     tokenized.append(token)
                 else:
                     if strategy == "unknown":
-                        token = key_word_map.get("<unk>")
+                        token = self.key_word_map.get("<unk>")
                         tokenized.append(token)
                     elif strategy == 'zeros':
                         tokenized.append(0)
-            return tokenized, key_word_map
+            return tokenized, self.key_word_map
         for sent in text:
             tokenized_text = []
             for word in sent.split():
-                if word in key_word_map.keys():
-                    token = key_word_map.get(word)
+                if word in self.key_word_map.keys():
+                    token = self.key_word_map.get(word)
                     tokenized_text.append(token)
                 else:
                     if strategy == "unknown":
-                        token = key_word_map.get("<unk>")
+                        token = self.key_word_map.get("<unk>")
                         tokenized_text.append(token)
                     elif strategy == 'zeros':
                         tokenized_text.append(0)
             tokenized.append(tokenized_text)
-        return tokenized, key_word_map
+        return tokenized, self.key_word_map
 
 
     def create_key_word_dict(self, text: [str]):

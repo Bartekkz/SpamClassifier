@@ -1,4 +1,5 @@
-import pytest import sys
+import pytest 
+import sys
 sys.path.append('..')
 from utils.sms_preprocessor import SmsPreprocessor
 from utils.tokenizer import Tokenizer
@@ -33,8 +34,8 @@ def test_preprocessor_remove_stopwords(test_input, expected):
     ("hello what is going on. What?", [1, 2, 3, 4, 5, 7], {"hello": 1, "what": 2, "is": 3, "going": 4, "on.": 5, "What": 6, "<unk>": 7})
 ])
 def test_preprocessor_tokenizer(test_input, expected, key_word_map):
-    tk = Tokenizer()
-    tokenized, key_word_map = tk.tokenize(test_input, key_word_map=key_word_map)
+    tk = Tokenizer(key_word_map)
+    tokenized, key_word_map = tk.tokenize(test_input)
     assert tokenized == expected 
 
 
