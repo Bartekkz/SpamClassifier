@@ -8,3 +8,4 @@ setuptools==39.0.1
 sklearn==0.0
 pytest
 nltk
+keras
