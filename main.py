@@ -16,9 +16,9 @@ if __name__ == '__main__':
         ("tokenizer", Tokenizer())
     ])
     tokenized, key_word_map = pipeline.fit_transform(text)
-    token, _ = pipeline.fit_transform("Barek")
+    token, key_word_map = pipeline.fit_transform("Barek")
     print(token)
-    print(_)
+    print(key_word_map)
 
 
 
