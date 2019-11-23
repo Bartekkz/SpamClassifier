@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-from tenkeras.layers import Conv2D
-from keras.models import Sequential
+import tensorflow as tf
+from tensorflow.keras.layers import Conv2D, MaxPool2D, AveragePooling2D
+from tensorflow.keras.models import Model
 
+i = 0
 
-def convolutional_layer_with_pooling(model, 
+def convolutional_layer_with_pooling(inputs, 
                                      filters, 
                                      kernel_size, 
                                      strides, padding, 
                                      data_format=None, 
-                                     pooling='max', **kwargs)
+                                     pooling='max', 
+                                     **kwargs):
   '''
   creates Keras based convolutional layer
 
@@ -22,17 +25,26 @@ def convolutional_layer_with_pooling(model,
   :returns: keras.layers.Conv2d
   : #TODO: add error raising
   '''
+  activation = kwargs.get('activation', 'relu')
+  pool_size = kwargs.get('pool_size', 2)
 
+  if pooling == 'max':
+    Pool = MaxPool2D()
+  else:
+    Pool = AveragePooling2D()
+
+  global i
+  with tf.name_scope(f'conv2d_block{i}'):
+    conv_layer = Conv2D(filters=filters,
+                        kernel_size=kernel_size,
+                        strides=strides,
+                        padding=padding,
+                        activation=activation,
+                        data_format=data_format)(inputs)
+
+    pooling = Pool(pool_size=pool_size)(conv_layer)
   
-
-  conv_layer = Conv2D(filters=filters,
-                      kernel_size=kernel_size,
-                      strides=strides,
-                      padding=padding,
-                      data_format=data_format)
-
-  #TODO: add with name_scope, convert to tf.keras 
-  #with K.name_scope  
+  return pooling
 
 def build_convolutional_model(filters, kernel_size, padding, data_format, classes, **kwargs):
   layers = kwargs.get('layers', 1)
@@ -43,3 +55,7 @@ def build_convolutional_model(filters, kernel_size, padding, data_format, classe
 
   print('Creating model...')
   model = Sequential()
+
+
+if __name__ == '__main__':
+  print('GOOD')
