@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import tensorflow as tf
-from tensorflow.keras.layers import Conv2D, MaxPool2D, AveragePooling2D, Input, BatchNormalization
+from tensorflow.keras.layers import Conv2D, MaxPool2D, AveragePooling2D, Input, BatchNormalization, Dense
 from tensorflow.keras.models import Model
 
 i = 0
@@ -62,7 +62,7 @@ def build_convolutional_model(filters, kernel_size, padding, data_format, classe
 
   print('Creating model...')
   inputs = Input(shape=(32, 32, 3))
-  for layer in range(layers):
+  for layer in range(layers - 1):
     if layer == 0:
       inpts=inputs
     else:
@@ -79,11 +79,14 @@ def build_convolutional_model(filters, kernel_size, padding, data_format, classe
                                                   activation='relu',
                                                   pool_size=(2,2)
                                                   )
-
-  model = Model(inputs, conv_block) 
+  if fc1:
+    fc1 = Dense(100)(conv_block)
+    model = Model(inputs, fc1) 
+    return model
+  model = Model(inputs, conv_block)
   return model
   
   
 if __name__ == '__main__':
-  model = build_convolutional_model(32, (3,3), 'valid', None, 3, layers=3, conv_dropout=True)
+  model = build_convolutional_model(32, (3,3), 'valid', None, 3, layers=3, conv_dropout=True, fc1=True)
   print(model.summary())
