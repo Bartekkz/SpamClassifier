@@ -1,23 +1,5 @@
 #!/usr/bin/env python3
 
-#def load_sms_data(path)
-#    '''
-#    load text data from given path 
-#    :param: path(str) -> path to data file
-#    :returns -> list of texts of sms and labels for them
-#    '''
-#    data = open(path) 
-#    sms_text = []
-#    labels = []
-#    for line in data: 
-#        line = line.split() 
-#        label = line[0]
-#        text = line[1:]
-#        sms_text.append(text)
-#        labels.append(label)        
-#
-#    return sms_text, labels
-
 
 class DataLoader:
     def __init__(self, path):
@@ -38,13 +20,8 @@ class DataLoader:
             line = line.split() 
             label = line[0]
             text = line[1:]
+            text = ' '.join(word for word in text)
             sms_text.append(text)
             labels.append(label)        
         return sms_text, labels
 
-
-
-if __name__ == '__main__':
-    loader = DataLoader('../data/sms_data')
-    print(loader.__len__())
-    print(loader.__getitem__(500))
