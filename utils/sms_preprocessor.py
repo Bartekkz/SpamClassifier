@@ -13,7 +13,6 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
     #TODO: Update docs
     def __init__(self, load):
         self.load = load
-
     
     def preprocess(self, text):
         '''
@@ -26,7 +25,6 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
         text = self.remove_stopwords(text) 
         text = self.stem_text(text)
         return text 
-
 
     def clean_text(self, text: [str]) -> [str]:
         '''
@@ -53,7 +51,6 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
             final_text.append(cleaned_sent)
         return final_text 
 
-
     def remove_stopwords(self, text):
         cleaned_text = []
         stop_words = set(stopwords.words('english'))
@@ -76,7 +73,6 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
             final_text.append(sent) 
         return final_text 
     
-
     def stem_text(self, text):
         ps = PorterStemmer()
         if isinstance(text, str):
@@ -87,8 +83,7 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
             stemmed_text = " ".join([ps.stem(word) for word in sent.split()])
             stemmed.append(stemmed_text)
         return stemmed
-
-    
+ 
     def transform(self, X, y=None):
         path = 'data/tweets/pickled/processed_sms.pickle'
         if self.load:
