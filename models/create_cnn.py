@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import tensorflow as tf
 from tensorflow.keras.layers import Conv2D, MaxPool2D, AveragePooling2D, Input, \
-                                    BatchNormalization, Dense, Flatten, Activation
+                                    BatchNormalization, Dense, Flatten, Activation, Dropout
 from tensorflow.keras.regularizers import l2                                
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Model
@@ -87,11 +87,16 @@ def build_convolutional_model(filters, kernel_size, padding, data_format, classe
   if fc1:
     flatten = Flatten()(conv_block)
     fc1 = Dense(classes, activation='relu', activity_regularizer=l2(loss_l2))(flatten)
+    if fc_dropout > 0:
+        fc_dropout = Dropout(fc_dropout)(fc1)
+        outputs = Activation('sigmoid')(fc_dropout)
+        model = Model(inputs, outputs)
+        return model
     outputs = Activation('sigmoid')(fc1)
     model = Model(inputs, outputs)  
   else:
     model = Model(inputs, conv_block)
-  
+    
   model.compile(optimizer=Adam(clipnorm=clipnorm, lr=lr),
                 loss='binary_crossentropy')
   print('Model Compiled Properly!')
@@ -99,5 +104,5 @@ def build_convolutional_model(filters, kernel_size, padding, data_format, classe
   
   
 if __name__ == '__main__':
-  model = build_convolutional_model(32, (3,3), 'valid', None, classes=2, layers=3, conv_dropout=True, fc1=True)
+  model = build_convolutional_model(32, (3,3), 'valid', None, classes=2, layers=3, fc1=True)
   print(model.summary())
