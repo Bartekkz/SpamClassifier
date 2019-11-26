@@ -29,7 +29,6 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
     def clean_text(self, text: [str]) -> [str]:
         '''
         lowercase text and remove punctuation
-
         @params:
             - text: str or list(str)
         
@@ -85,7 +84,7 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
         return stemmed
  
     def transform(self, X, y=None):
-        path = 'data/tweets/pickled/processed_sms.pickle'
+        path = os.path.join(os.getcwd(), 'data/pickled/processed_sms.pickle')
         if self.load:
             if os.path.exists(path):
                 print('Loading...')
