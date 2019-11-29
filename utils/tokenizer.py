@@ -6,9 +6,13 @@ from sklearn.base import BaseEstimator, TransformerMixin
 
 
 class Tokenizer(BaseEstimator, TransformerMixin):
-    def __init__(self, key_word_map=None):
+    def __init__(self, key_word_map=None): 
         self.key_word_map = key_word_map
-
+    
+    def __getitem__(self, word):
+        for key in self.key_word_map.keys():
+            if key == word:
+                return self.key_word_map.get(word)
     
     def tokenize(self, text, strategy="unknown"):
         #TODO: add other strategies, change function
