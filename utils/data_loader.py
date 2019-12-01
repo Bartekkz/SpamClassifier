@@ -27,5 +27,6 @@ class DataLoader:
             sms_text.append(text)
             labels.append(label)
         if one_hot_labels:
-            labels = [[0, 1] if label == 'ham' else [1, 0] for label in labels]
+            #TODO: Convert labels, and sms_text to to np.arrays
+            labels =[[0, 1] if label == 'ham' else [1, 0] for label in labels]
         return sms_text, labels
