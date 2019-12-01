@@ -5,14 +5,11 @@ from utils.tokenizer import Tokenizer
 from sklearn.pipeline import Pipeline
 
 
-
 text = ["Hello man what do you want? what is going on", 'what do going You want']
-
-
 
 if __name__ == '__main__':
     pipeline = Pipeline([
-        ("preprocessor", SmsPreprocessor(True)),
+        ("preprocessor", SmsPreprocessor(False)),
         ("tokenizer", Tokenizer())
     ])
     loader = DataLoader('./data/sms_data')
