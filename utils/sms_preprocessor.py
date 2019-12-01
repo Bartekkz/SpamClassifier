@@ -1,9 +1,6 @@
 import os
-import random
-from sklearn.pipeline import Pipeline
-from sklearn.base import BaseEstimator, TransformerMixin       
+from sklearn.base import BaseEstimator, TransformerMixin
 import string 
-import nltk
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 import pickle
@@ -13,20 +10,22 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
     #TODO: Update docs
     def __init__(self, load):
         self.load = load
-    
-    def preprocess(self, text):
+
+    @staticmethod
+    def preprocess(text):
         '''
         @params:
         - text: str
         @return:
         - text: str -> lowercased and without punctuation 
         '''
-        text = self.clean_text(text)
-        text = self.remove_stopwords(text) 
-        text = self.stem_text(text)
-        return text 
+        text = SmsPreprocessor.clean_text(text)
+        text = SmsPreprocessor.remove_stopwords(text)
+        text = SmsPreprocessor.stem_text(text)
+        return text
 
-    def clean_text(self, text: [str]) -> [str]:
+    @staticmethod
+    def clean_text(text: [str]) -> [str]:
         '''
         lowercase text and remove punctuation
         @params:
@@ -48,9 +47,10 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
                     cleaned_text.append(text)                    
             cleaned_sent = " ".join([word for word in cleaned_text])
             final_text.append(cleaned_sent)
-        return final_text 
+        return final_text
 
-    def remove_stopwords(self, text):
+    @staticmethod
+    def remove_stopwords(text):
         cleaned_text = []
         stop_words = set(stopwords.words('english'))
         if isinstance(text, str):
@@ -70,9 +70,10 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
                     cleaned_text.append(word)
             sent = " ".join([word for word in cleaned_text])
             final_text.append(sent) 
-        return final_text 
-    
-    def stem_text(self, text):
+        return final_text
+
+    @staticmethod
+    def stem_text(text):
         ps = PorterStemmer()
         if isinstance(text, str):
             text = ' '.join([ps.stem(word) for word in text.split()])
@@ -104,7 +105,6 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
             print('Done!')
 
         return processed_sms
-
 
     def fit(self, X, y=None):
         return self
