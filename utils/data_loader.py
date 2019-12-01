@@ -24,4 +24,3 @@ class DataLoader:
             sms_text.append(text)
             labels.append(label)        
         return sms_text, labels
-
