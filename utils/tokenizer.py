@@ -1,8 +1,8 @@
-'''
+"""
 Functions to extract word_key_maps and perform tokenization
-'''
-from sklearn.base import BaseEstimator, TransformerMixin       
-
+"""
+from sklearn.base import BaseEstimator, TransformerMixin
+import numpy as np
 
 
 class Tokenizer(BaseEstimator, TransformerMixin):
@@ -15,9 +15,10 @@ class Tokenizer(BaseEstimator, TransformerMixin):
                 return self.key_word_map.get(word)
     
     def tokenize(self, text, strategy="unknown"):
-        #TODO: add other strategies, change function
+        # TODO: add other strategies, change function
+        # TODO: optimize functions (atm sphagetti code :) )
         tokenized = []
-        #TODO: change type of initing key_word_map
+        # TODO: change type of initing key_word_map
         if self.key_word_map is None:
             self.key_word_map = self.create_key_word_dict(text)
         if isinstance(text, str):
@@ -44,8 +45,9 @@ class Tokenizer(BaseEstimator, TransformerMixin):
                         tokenized_text.append(token)
                     elif strategy == 'zeros':
                         tokenized_text.append(0)
+            # TODO: change appending
             tokenized.append(tokenized_text)
-        return tokenized, self.key_word_map
+        return np.asarray(tokenized), self.key_word_map
 
 
     def create_key_word_dict(self, text: [str]):
