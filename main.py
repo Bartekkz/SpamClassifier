@@ -23,4 +23,3 @@ if __name__ == '__main__':
     #model.fit(tokenized, loader.labels, class_weights=class_weights)
     #TODO: add function to save model as json plus save weights
 
-
