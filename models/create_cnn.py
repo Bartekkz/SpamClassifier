@@ -11,7 +11,7 @@ from typing import Union
 i = 0
 
 
-def convolutional_layer_with_pooling(inputs, 
+def convolutional_layer_with_pooling(model,
                                      filters, 
                                      kernel_size, 
                                      strides, 
@@ -44,17 +44,16 @@ def convolutional_layer_with_pooling(inputs,
 
     global i
     with tf.name_scope(f'conv2d_block{i}'):
-        conv_layer = Conv2D(filters=filters,
-                            kernel_size=kernel_size,
-                            strides=strides,
-                            padding=padding,
-                            activation=activation,
-                            data_format=data_format)(inputs)
-        pooling = pool(conv_layer)
+        model.add(Conv2D(filters=filters,
+                         kernel_size=kernel_size,
+                         strides=strides,
+                         padding=padding,
+                         activation=activation,
+                         data_format=data_format))
+        model.add(pool)
     if conv_dropout:
-        batch_norm = BatchNormalization()(pooling)
-        return batch_norm
-    return pooling
+        model.add(BatchNormalization())
+    return model
 
 
 def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padding: str, strides: Union[int, tuple],
@@ -70,9 +69,8 @@ def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padd
     pooling = kwargs.get('pooling', 'max')
     pool_size = kwargs.get('pool_size', 2)
 
-    conv_block = None
+    # TODO: change function for Sequentail model
     print('Creating model...')
-    inputs = Input(shape=(32, 32, 3))
     for layer in range(layers - 1):
         if layer == 0:
             inpts=inputs
