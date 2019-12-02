@@ -16,15 +16,16 @@ def train_model(model, X, y, save_model, path='', **kwargs):
     """
     # TODO: add some callbacks
     epochs = kwargs.get('epochs', 4)
-    class_weights = kwargs.get('class_weights', None)
+    batch_size = kwargs.get('batch_size', 16)
+    class_weight = kwargs.get('class_weight', None)
     validation_split = kwargs.get('validation_split', 0.2)
-    model_path = kwargs.get('model_path', os.path.jsoin(path, 'model_json.json'))
+    model_path = kwargs.get('model_path', os.path.join(path, 'model_json.json'))
     weights_path = kwargs.get('weights_path', os.path.join(path, 'model_weights.h5'))
 
     assert model_path[-5:] == '.json'
     assert weights_path[-3:] == '.h5'
 
-    model.fit(X, y, epochs=epochs, validation_split=validation_split, class_weights=class_weights)
+    model.fit(X, y, epochs=epochs, batch_size=batch_size, validation_split=validation_split, class_weight=class_weight)
     model_json = model.to_json()
 
     if os.path.exists(model_path):

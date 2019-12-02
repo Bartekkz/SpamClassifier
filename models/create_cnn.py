@@ -57,9 +57,8 @@ def convolutional_layer_with_pooling(inputs,
     return pooling
 
 
-def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padding: Union[int, tuple],
-                              strides: Union[int, tuple], data_format: Union[str, None], classes: int,
-                              **kwargs: object) -> Model:
+def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padding: str, strides: Union[int, tuple],
+                              data_format: Union[str, None], classes: int, **kwargs: object) -> Model:
     layers = kwargs.get('layers', 1)
     fc_dropout = kwargs.get('fc_dropout', 0)
     conv_dropout = kwargs.get('conv_dropout', False)
