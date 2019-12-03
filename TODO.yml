@@ -1,3 +1,4 @@
 TODO:
-  - convert X to proper input_shape
+  - convert X to proper input_shape for conv1D
   - convert X to numpy arrays
+  - add embedding layer on top of the net

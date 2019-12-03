@@ -6,9 +6,12 @@ import numpy as np
 
 
 class Tokenizer(BaseEstimator, TransformerMixin):
-    def __init__(self, key_word_map=None): 
+    def __init__(self, key_word_map=None, pad_sequences=True, maxlen=50, padding='pre'):
         self.key_word_map = key_word_map
-    
+        self.pad_sequences = pad_sequences
+        self.maxlen = maxlen
+        self.padding = padding
+
     def __getitem__(self, word):
         for key in self.key_word_map.keys():
             if key == word:
@@ -46,17 +49,19 @@ class Tokenizer(BaseEstimator, TransformerMixin):
                     elif strategy == 'zeros':
                         tokenized_text.append(0)
             # TODO: change appending
+            # TODO: change function
+            tokenized_text = np.asarray(tokenized_text, dtype=np.float32)
             tokenized.append(tokenized_text)
         return np.asarray(tokenized), self.key_word_map
 
-
-    def create_key_word_dict(self, text: [str]):
-        '''
+    @staticmethod
+    def create_key_word_dict(text: [str]):
+        """
         Create dictionary of word, token pairs
         @params:
         - text: str or list(str)
         - clean_text: bool -> lowercase text and remove punctuation
-        '''
+        """
         key_word_map = {}
         if isinstance(text, str):
             text = [text]
@@ -65,18 +70,38 @@ class Tokenizer(BaseEstimator, TransformerMixin):
             for word in sentence.split(): 
                 if word in key_word_map.keys():
                     continue 
-                key_word_map[word] = i 
+                key_word_map[word] = i
                 i += 1
+        # TODO: think about unknows
         key_word_map["<unk>"] = i
         return key_word_map
 
-    
+    @staticmethod
+    def pad_seq(tokenized_text, maxlen, padding='pre'):
+        if isinstance(tokenized_text, list):
+            tokenized_text = np.asarray(tokenized_text)
+        padded_seq = np.zeros((len(tokenized_text), maxlen), dtype='float32')
+        for i, text in enumerate(tokenized_text):
+            if text.shape[0] < maxlen:
+                if padding == 'pre':
+                    padded_seq[i] = np.pad(text, (0, maxlen - len(text)), 'constant')
+                elif padding == 'post':
+                    padded_seq[i] = np.pad(text, (maxlen - len(text), 0), 'constant')
+            elif text.shape[0] > maxlen:
+                padded_seq[i] = text[:maxlen]
+        return padded_seq
+
     def transform(self, X, y=None):
         print('Tokenizing...')
-        tokenized = self.tokenize(X)
+        tokenized, key_word_map = self.tokenize(X)
+        # TODO: check if this code has any sense or need to change it
+        print('Tokenized!')
+        if self.pad_sequences:
+            padded = Tokenizer.pad_seq(tokenized, maxlen=self.maxlen, padding=self.padding)
+            print('Finished')
+            return padded, key_word_map
         print('Finished!')
-        return tokenized
-    
+        return tokenized, key_word_map
 
     def fit(self, X, y=None):
         return self
