@@ -6,6 +6,9 @@ from sklearn.pipeline import Pipeline
 from models.create_cnn import build_convolutional_model
 from models.train_model import train_model
 
+import numpy as np
+
+
 text = ["Hello man what do you want? what is going on", 'what do going You want']
 class_weight = {
     0: 1.,
@@ -18,6 +21,8 @@ if __name__ == '__main__':
     ])
     loader = DataLoader('./data/sms_data', convert_to_int=True)
     tokenized, key_word_map = pipeline.fit_transform(loader.sms_data)
+    tokenized = np.expand_dims(tokenized, axis=2)
+
 
     model = build_convolutional_model(filters=32, kernel_size=3, padding="valid", strides=1, data_format=None,
                                       classes=2, layers=3, fc1=True, fc_dropout=0.5, pooling='max', pool_size=2)
