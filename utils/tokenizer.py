@@ -49,17 +49,19 @@ class Tokenizer(BaseEstimator, TransformerMixin):
                     elif strategy == 'zeros':
                         tokenized_text.append(0)
             # TODO: change appending
-            tokenized.append(np.asarray(tokenized_text))
-        return tokenized, self.key_word_map
+            # TODO: change function
+            tokenized_text = np.asarray(tokenized_text, dtype=np.float32)
+            tokenized.append(tokenized_text)
+        return np.asarray(tokenized), self.key_word_map
 
     @staticmethod
     def create_key_word_dict(text: [str]):
-        '''
+        """
         Create dictionary of word, token pairs
         @params:
         - text: str or list(str)
         - clean_text: bool -> lowercase text and remove punctuation
-        '''
+        """
         key_word_map = {}
         if isinstance(text, str):
             text = [text]
@@ -78,7 +80,7 @@ class Tokenizer(BaseEstimator, TransformerMixin):
     def pad_seq(tokenized_text, maxlen, padding='pre'):
         if isinstance(tokenized_text, list):
             tokenized_text = np.asarray(tokenized_text)
-        padded_seq = np.zeros((len(tokenized_text), maxlen), dtype='int32')
+        padded_seq = np.zeros((len(tokenized_text), maxlen), dtype='float32')
         for i, text in enumerate(tokenized_text):
             if text.shape[0] < maxlen:
                 if padding == 'pre':
