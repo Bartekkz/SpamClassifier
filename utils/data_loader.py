@@ -33,4 +33,4 @@ class DataLoader:
             labels.append(label)
         if convert_to_int:
             labels = np.array([0 if label == 'ham' else 1 for label in labels])
-        return np.array(sms_text), labels
+        return sms_text, labels

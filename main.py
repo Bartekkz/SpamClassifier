@@ -18,9 +18,7 @@ if __name__ == '__main__':
     ])
     loader = DataLoader('./data/sms_data', convert_to_int=True)
     tokenized, key_word_map = pipeline.fit_transform(loader.sms_data)
-    print(tokenized.shape)
-    print(tokenized[500])
-    print(tokenized[1000:1002])
+
     model = build_convolutional_model(filters=32, kernel_size=3, padding="valid", strides=1, data_format=None,
                                       classes=2, layers=3, fc1=True, fc_dropout=0.5, pooling='max', pool_size=2)
 
