@@ -20,13 +20,20 @@ if __name__ == '__main__':
         ("tokenizer", Tokenizer())
     ])
     loader = DataLoader('./data/sms_data', convert_to_int=True)
+    print(loader.labels.shape)
     tokenized, key_word_map = pipeline.fit_transform(loader.sms_data)
-    tokenized = np.expand_dims(tokenized, axis=2)
-
-
+    
+    print(tokenized.shape)
     model = build_convolutional_model(filters=32, kernel_size=3, padding="valid", strides=1, data_format=None,
-                                      classes=2, layers=3, fc1=True, fc_dropout=0.5, pooling='max', pool_size=2)
-
-    model = train_model(model=model, X=tokenized, y=loader.labels, save_model=True,
-                        model_path='data/models/model_1.json', weights_path='data/weights/model_weights1.h5', epochs=4,
-                        batch_size=16, class_weight=class_weight)
+                                      classes=2, layers=3, fc=True, fc_dropout=0.5, pooling='max', pool_size=2)
+    print(model.summary())
+    model = train_model(model=model, 
+                        X=tokenized, 
+                        y=loader.labels, 
+                        save_model=True, 
+                        model_path='model_1.json',
+                        weights_path='model_weights_1.h5',
+                        epochs=4,
+                        batch_size=16,
+                        class_weight=class_weight,
+                        conv_dropout=True)
