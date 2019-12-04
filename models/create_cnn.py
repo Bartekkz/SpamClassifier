@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 import tensorflow as tf
-from tensorflow.keras.layers import Conv1D, MaxPool1D, AveragePooling1D, \
-                                    BatchNormalization, Dense, Flatten, Activation, Dropout
+from tensorflow.keras.layers import Conv1D, MaxPool1D, AveragePooling1D, BatchNormalization, Dense, Flatten, \
+                                    Activation, Dropout, Embedding, GlobalMaxPooling1D
 from tensorflow.keras.regularizers import l2                                
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Sequential
+from tensorflow.keras import metrics
 
 from typing import Union
 
@@ -51,6 +52,7 @@ def convolutional_layer_with_pooling(model,
                          strides=strides,
                          padding=padding,
                          activation=activation,
+                         batch_input_shape=(None, 50, 1),
                          data_format=data_format))
         model.add(pool)
     if conv_dropout:
@@ -58,23 +60,26 @@ def convolutional_layer_with_pooling(model,
     return model
 
 
-def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padding: str, strides: Union[int, tuple],
-                              data_format: Union[str, None], classes: int, **kwargs: object) -> Sequential:
+def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padding: str, 
+                              strides: Union[int, tuple], data_format: Union[str, None], 
+                              classes: int, **kwargs: object) -> Sequential:
     layers = kwargs.get('layers', 1)
     fc_dropout = kwargs.get('fc_dropout', 0)
     conv_dropout = kwargs.get('conv_dropout', False)
     conv_activation = kwargs.get('conv_activation', 'relu')
-    fc = kwargs.get('fc', False)
+    fc = kwargs.get('fc', True)
     loss_l2 = kwargs.get('loss_l2', 0)
     lr = kwargs.get('lr', 0.001)
     clipnorm = kwargs.get('clipnorm', 0)
     pooling = kwargs.get('pooling', 'max')
     pool_size = kwargs.get('pool_size', 2)
+    maxlen = kwargs.get('maxlen', 50)
 
     # TODO: change function for Sequentail model
     print('Creating model...')
     model = Sequential()
-    for layer in range(layers):
+    model.add(Embedding(10000, 100, input_length=maxlen))
+    for layer in range(layers): 
         model = convolutional_layer_with_pooling(model=model,
                                                  filters=filters,
                                                  kernel_size=kernel_size,
@@ -87,14 +92,15 @@ def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padd
                                                  pool_size=pool_size
                                                  )
     if fc:
-        model.Flatten()
-        model.add(Dense(classes, activation='relu', activity_regularizer=l2(loss_l2)))
+        model.add(Flatten())
+        model.add(Dense(1, activation='relu', activity_regularizer=l2(loss_l2)))
         if fc_dropout > 0:
             model.add(Dropout(fc_dropout))
             model.add(Activation('sigmoid'))
         else:
             model.add(Activation('sigmoid'))
     model.compile(optimizer=Adam(clipnorm=clipnorm, lr=lr),
-                  loss="binary_crossentropy")
+                  loss="binary_crossentropy",
+                  metrics=['acc', metrics.binary_accuracy])
     print('Model Compiled Properly!')
     return model
