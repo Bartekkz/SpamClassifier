@@ -99,7 +99,7 @@ def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padd
             model.add(Activation('sigmoid'))
         else:
             model.add(Activation('sigmoid'))
-    model.compile(optimizer=Adam(clipnorm=clipnorm, lr=lr),
+    model.compile(optimizer="adam",
                   loss="binary_crossentropy",
                   metrics=['acc', metrics.binary_accuracy])
     print('Model Compiled Properly!')
