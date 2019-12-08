@@ -27,7 +27,7 @@ if __name__ == '__main__':
     tokenized, key_word_map = pipeline.fit_transform(loader.sms_data)
     labels = loader.labels
 
-
+    # calculate weights for classes, because of imbalanced dataset
     class_weight = class_weight.compute_class_weight('balanced',
                                                      np.unique(labels),
                                                      labels)
