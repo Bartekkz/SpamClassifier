@@ -8,9 +8,6 @@ import pickle
 
 class SmsPreprocessor(BaseEstimator, TransformerMixin):
     #TODO: Update docs
-    def __init__(self, load):
-        self.load = load
-
     @staticmethod
     def preprocess(text):
         '''
@@ -85,25 +82,9 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
         return stemmed
  
     def transform(self, X, y=None):
-        path = os.path.join(os.getcwd(), 'data/pickled/processed_sms.pickle')
-        if self.load:
-            if os.path.exists(path):
-                print('Loading...')
-                print("PATH EXISTS")
-                with open(path, 'rb') as f:
-                    processed_sms = pickle.load(f)
-                    print('Done')
-            else:
-                print('Processing...') 
-                processed_sms = self.preprocess(X)
-                with open(path, 'wb') as f:
-                    pickle.dump(processed_sms, f)
-                    print('Done!')
-        else:
-            print('Processing...')
-            processed_sms = self.preprocess(X)
-            print('Done!')
-
+        print('Processing...')
+        processed_sms = self.preprocess(X)
+        print('Done!')
         return processed_sms
 
     def fit(self, X, y=None):
