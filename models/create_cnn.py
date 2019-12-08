@@ -93,12 +93,13 @@ def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padd
                                                  )
     if fc:
         model.add(Flatten())
-        model.add(Dense(1, activation='relu', activity_regularizer=l2(loss_l2)))
+        model.add(Dense(128, activation='relu', activity_regularizer=l2(loss_l2)))
         if fc_dropout > 0:
             model.add(Dropout(fc_dropout))
-            model.add(Activation('sigmoid'))
-        else:
-            model.add(Activation('sigmoid'))
+            #model.add(Activation('sigmoid'))
+    model.add(Dense(1, activation='sigmoid'))
+
+    # Compile model
     model.compile(optimizer="adam",
                   loss="binary_crossentropy",
                   metrics=['acc', metrics.binary_accuracy])
