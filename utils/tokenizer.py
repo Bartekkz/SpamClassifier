@@ -3,14 +3,17 @@ Functions to extract word_key_maps and perform tokenization
 """
 from sklearn.base import BaseEstimator, TransformerMixin
 import numpy as np
+import json
 
 
 class Tokenizer(BaseEstimator, TransformerMixin):
-    def __init__(self, key_word_map=None, pad_sequences=True, maxlen=50, padding='pre'):
+    def __init__(self, key_word_map=None, pad_sequences=True, maxlen=50, padding='pre', save_path=None):
         self.key_word_map = key_word_map
         self.pad_sequences = pad_sequences
         self.maxlen = maxlen
         self.padding = padding
+        self.save_path = save_path
+
 
     def __getitem__(self, word):
         for key in self.key_word_map.keys():
@@ -35,7 +38,7 @@ class Tokenizer(BaseEstimator, TransformerMixin):
                         tokenized.append(token)
                     elif strategy == 'zeros':
                         tokenized.append(0)
-            return tokenized, self.key_word_map
+            return [tokenized], self.key_word_map
         for sent in text:
             tokenized_text = []
             for word in sent.split():
@@ -52,6 +55,10 @@ class Tokenizer(BaseEstimator, TransformerMixin):
             # TODO: change function
             tokenized_text = np.asarray(tokenized_text, dtype=np.float32)
             tokenized.append(tokenized_text)
+        if self.save_path is not None:
+            with open(self.save_path, 'w') as json_file:
+               key_word = json.dumps(self.key_word_map) 
+               json_file.write(key_word) 
         return np.asarray(tokenized), self.key_word_map
 
     @staticmethod
