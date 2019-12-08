@@ -75,7 +75,6 @@ def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padd
     pool_size = kwargs.get('pool_size', 2)
     maxlen = kwargs.get('maxlen', 50)
 
-    # TODO: change function for Sequentail model
     print('Creating model...')
     model = Sequential()
     model.add(Embedding(10000, 100, input_length=maxlen))
@@ -96,11 +95,10 @@ def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padd
         model.add(Dense(128, activation='relu', activity_regularizer=l2(loss_l2)))
         if fc_dropout > 0:
             model.add(Dropout(fc_dropout))
-            #model.add(Activation('sigmoid'))
     model.add(Dense(1, activation='sigmoid'))
 
     # Compile model
-    model.compile(optimizer="adam",
+    model.compile(optimizer=Adam(lr=lr, clipnorm=clipnorm),
                   loss="binary_crossentropy",
                   metrics=['acc', metrics.binary_accuracy])
     print('Model Compiled Properly!')
