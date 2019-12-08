@@ -21,16 +21,18 @@ parser.set_defaults(save=True)
 args = parser.parse_args()
 
 if __name__ == '__main__':
-    pipeline = Pipeline([
-        ("preprocessor", SmsPreprocessor()),
-        ("tokenizer", Tokenizer(save_path='data/key_word_map.json'))
-    ])
-    print(pipeline)
-    loader = DataLoader('./data/sms_data', convert_to_int=True)
-    tokenized = pipeline.fit_transform(loader.sms_data)
     with open('data/key_word_map.json', 'r') as json_file:
         key_word_map = json.loads(json_file.read())
-    print(key_word_map)
+
+    pipeline = Pipeline([
+        ("preprocessor", SmsPreprocessor()),
+        ("tokenizer", Tokenizer(key_word_map=key_word_map))
+    ])
+    text = ['Press this button to win 500 dollats', 'I will be late today. Do not wait for me honey',
+            'Have you always dreamd about muscles? Click this advert!', 'REMINDER FROM O2: To get 2.50 pounds free call credit and details of great offers pls reply 2 this text with your valid name, house no and postcode']
+    model = load_model('data/models_data/model_1.json', 'data/models_data/model_weights_1.h5')
+    predict(text, model , pipeline) 
+
 
     #class_weight = class_weight.compute_class_weight('balanced',
     #                                                 np.unique(labels),
@@ -52,7 +54,7 @@ if __name__ == '__main__':
     #                    shuffle_data=True)
     #
     #del model
-    #model = load_model('data/models_data/model_1.json', 'data/models_data/model_weights_1.h5')
+    
     #predict(["I will be at home home around 5pm"], model, pipeline)
     
     

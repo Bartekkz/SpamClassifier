@@ -38,7 +38,7 @@ class Tokenizer(BaseEstimator, TransformerMixin):
                         tokenized.append(token)
                     elif strategy == 'zeros':
                         tokenized.append(0)
-            return tokenized, self.key_word_map
+            return [tokenized], self.key_word_map
         for sent in text:
             tokenized_text = []
             for word in sent.split():
