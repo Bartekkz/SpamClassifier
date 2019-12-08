@@ -19,25 +19,18 @@ parser.set_defaults(save=True)
 args = parser.parse_args()
 
 if __name__ == '__main__':
-    #pipeline = Pipeline([
-    #    ("preprocessor", SmsPreprocessor(True)),
-    #    ("tokenizer", Tokenizer())
-    #])
+    pipeline = Pipeline([
+        ("preprocessor", SmsPreprocessor(True)),
+        ("tokenizer", Tokenizer())
+    ])
     #loader = DataLoader('./data/sms_data', convert_to_int=True)
     #tokenized, key_word_map = pipeline.fit_transform(loader.sms_data)
     #labels = loader.labels
 
-<<<<<<< HEAD
 
     #class_weight = class_weight.compute_class_weight('balanced',
     #                                                 np.unique(labels),
     #                                                 labels)
-=======
-    # calculate weights for classes, because of imbalanced dataset
-    class_weight = class_weight.compute_class_weight('balanced',
-                                                     np.unique(labels),
-                                                     labels)
->>>>>>> c63b5496e9e7d42c659111d5a6a8dab5a1ed9b19
 
     #model = build_convolutional_model(filters=32, kernel_size=3, padding="valid", strides=1, data_format=None,
     #                                  classes=2, layers=3, fc=True, fc_dropout=0.5, pooling='max', pool_size=2)
@@ -55,6 +48,7 @@ if __name__ == '__main__':
     #                    shuffle_data=True)
     #
     #del model
+
     model = load_model('data/models_data/model_1.json', 'data/models_data/model_weights_1.h5')
     
     
