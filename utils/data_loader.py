@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import numpy as np
 
+
 class DataLoader:
     def __init__(self, path, convert_to_int=True):
         self.path = path
