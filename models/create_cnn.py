@@ -4,10 +4,11 @@ from tensorflow.keras.layers import Conv1D, MaxPool1D, AveragePooling1D, BatchNo
                                     Activation, Dropout, Embedding, GlobalMaxPooling1D
 from tensorflow.keras.regularizers import l2                                
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import Sequential, model_from_json
 from tensorflow.keras import metrics
 
 from typing import Union
+import json
 
 i = 0
 
@@ -104,4 +105,15 @@ def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padd
                   loss="binary_crossentropy",
                   metrics=['acc', metrics.binary_accuracy])
     print('Model Compiled Properly!')
+    return model
+
+
+def load_model(arch_path, weights_path):
+    #model = model_from_json(json.dumps(arch_path))
+    with open(arch_path, 'r') as json_file:
+        architecture = json_file.read() 
+        model = model_from_json(architecture)
+    model.load_weights(weights_path)
+    print(model.summary())
+    print('model loaded succesfully!')
     return model
