@@ -1,7 +1,8 @@
 import os
+from sklearn.utils import shuffle
 
 
-def train_model(model, X, y, save_model, **kwargs):
+def train_model(model, X, y, shuffle_data, save_model, **kwargs):
     """
     Trains the model with given params and saves the model architecture
     to json file, and weights to hdf5 format
@@ -21,25 +22,24 @@ def train_model(model, X, y, save_model, **kwargs):
     validation_split = kwargs.get('validation_split', 0.2)
     model_path = kwargs.get('model_path', 'model_json.json')
     weights_path = kwargs.get('weights_path', 'model_weights.h5')
-    shuffle = kwargs.get('shuffle', True)
-    save = kwargs.get('save_model', True)
-
     data_path = os.path.abspath('data')
 
     # TODO: fix paths
     model_path = os.path.join(data_path, model_path)
     weights_path = os.path.join(data_path, weights_path)
 
-    print(model_path)
-
     assert model_path[-5:] == '.json'
     assert weights_path[-3:] == '.h5'
+
+    if shuffle_data:
+        X, y = shuffle(X, y)
 
 
     model.fit(X, y, epochs=epochs, batch_size=batch_size, validation_split=validation_split, class_weight=class_weight, shuffle=shuffle)
     model_json = model.to_json()
-
-    if save:
+    
+    if save_model:
+        print('Saving...')
         if os.path.exists(model_path):
             raise FileExistsError
         else:
