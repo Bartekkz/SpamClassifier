@@ -12,7 +12,6 @@ from utils.tokenizer import Tokenizer
 
 
 def load_model(arch_path, weights_path):
-    #model = model_from_json(json.dumps(arch_path))
     with open(arch_path, 'r') as json_file:
         architecture = json_file.read() 
         model = model_from_json(architecture)
@@ -39,6 +38,7 @@ def predict(sms, model, pipeline):
             prettify_print('HAM!', sms[i])
         i += 1 
     print('\n' * 2)
+
 
 def prettify_print(text, original):
     print('   -------    ')

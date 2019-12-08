@@ -97,7 +97,6 @@ def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padd
         model.add(Dense(128, activation='relu', activity_regularizer=l2(loss_l2)))
         if fc_dropout > 0:
             model.add(Dropout(fc_dropout))
-            #model.add(Activation('sigmoid'))
     model.add(Dense(1, activation='sigmoid'))
 
     # Compile model

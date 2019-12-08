@@ -29,9 +29,10 @@ if __name__ == '__main__':
         ("tokenizer", Tokenizer(key_word_map=key_word_map))
     ])
     text = ['Press this button to win 500 dollats', 'I will be late today. Do not wait for me honey',
-            'Have you always dreamd about muscles? Click this advert!', 'REMINDER FROM O2: To get 2.50 pounds free call credit and details of great offers pls reply 2 this text with your valid name, house no and postcode']
+            'Have you always dreamd about muscles? Click this advert!',
+            'REMINDER FROM O2: To get 2.50 pounds free call credit and details of great offers pls reply 2 this text with your valid name, house no and postcode']
     model = load_model('data/models_data/model_1.json', 'data/models_data/model_weights_1.h5')
-    predict(text, model , pipeline) 
+    predict(text, model, pipeline)
 
 
     #class_weight = class_weight.compute_class_weight('balanced',
@@ -40,7 +41,7 @@ if __name__ == '__main__':
 
     #model = build_convolutional_model(filters=32, kernel_size=3, padding="valid", strides=1, data_format=None,
     #                                  classes=2, layers=3, fc=True, fc_dropout=0.5, pooling='max', pool_size=2)
-    ## TODO: add parameters to the function instead of hard coded 
+    # TODO: add parameters to the function instead of hard coded
     #model = train_model(model=model, 
     #                    X=tokenized,
     #                    y=labels, 

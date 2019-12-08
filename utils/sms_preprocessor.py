@@ -7,15 +7,15 @@ import pickle
 
 
 class SmsPreprocessor(BaseEstimator, TransformerMixin):
-    #TODO: Update docs
+    # TODO: Update docs
     @staticmethod
     def preprocess(text):
-        '''
+        """
         @params:
         - text: str
         @return:
-        - text: str -> lowercased and without punctuation 
-        '''
+        - text: str -> lowercased and without punctuation
+        """
         text = SmsPreprocessor.clean_text(text)
         text = SmsPreprocessor.remove_stopwords(text)
         text = SmsPreprocessor.stem_text(text)
@@ -23,14 +23,14 @@ class SmsPreprocessor(BaseEstimator, TransformerMixin):
 
     @staticmethod
     def clean_text(text: [str]) -> [str]:
-        '''
+        """
         lowercase text and remove punctuation
         @params:
             - text: str or list(str)
         
         @return:
            - list of lowered strings(sentences) without punctuation
-        '''
+        """
         if isinstance(text, str):
             text = text.lower()
             text = ''.join(v for v in text if v not in string.punctuation)

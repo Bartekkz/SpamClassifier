@@ -14,7 +14,6 @@ class Tokenizer(BaseEstimator, TransformerMixin):
         self.padding = padding
         self.save_path = save_path
 
-
     def __getitem__(self, word):
         for key in self.key_word_map.keys():
             if key == word:
@@ -57,8 +56,8 @@ class Tokenizer(BaseEstimator, TransformerMixin):
             tokenized.append(tokenized_text)
         if self.save_path is not None:
             with open(self.save_path, 'w') as json_file:
-               key_word = json.dumps(self.key_word_map) 
-               json_file.write(key_word) 
+                key_word = json.dumps(self.key_word_map)
+                json_file.write(key_word)
         return np.asarray(tokenized), self.key_word_map
 
     @staticmethod
