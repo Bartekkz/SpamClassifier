@@ -4,6 +4,7 @@ Functions to extract word_key_maps and perform tokenization
 from sklearn.base import BaseEstimator, TransformerMixin
 import numpy as np
 import json
+import pickle
 
 
 class Tokenizer(BaseEstimator, TransformerMixin):
@@ -25,7 +26,8 @@ class Tokenizer(BaseEstimator, TransformerMixin):
         tokenized = []
         # TODO: change type of initing key_word_map
         if self.key_word_map is None:
-            self.key_word_map = self.create_key_word_dict(text)
+            if self.save_path:
+                self.key_word_map = self.create_key_word_dict(text, self.save_path)
         if isinstance(text, str):
             for word in text.split():
                 if word in self.key_word_map.keys():
@@ -61,7 +63,7 @@ class Tokenizer(BaseEstimator, TransformerMixin):
         return np.asarray(tokenized), self.key_word_map
 
     @staticmethod
-    def create_key_word_dict(text: [str]):
+    def create_key_word_dict(text: [str], save_path=None):
         """
         Create dictionary of word, token pairs
         @params:
@@ -80,6 +82,11 @@ class Tokenizer(BaseEstimator, TransformerMixin):
                 i += 1
         # TODO: think about unknows
         key_word_map["<unk>"] = i
+        if save_path:
+            assert (save_path[-3:] == 'pkl'),"At the moment You can only save files with pickle(.pkl) extension" 
+            
+            with open(save_path, 'wb') as f:
+                pickle.dump(key_word_map, f) 
         return key_word_map
 
     @staticmethod

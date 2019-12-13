@@ -64,6 +64,8 @@ def convolutional_layer_with_pooling(model,
 def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padding: str, 
                               strides: Union[int, tuple], data_format: Union[str, None], 
                               classes: int, **kwargs: object) -> Sequential:
+    embeddings = kwargs.get('embeddings', 16000)
+    embeddings_dim = kwargs.get('embeddings_dim', 100)
     layers = kwargs.get('layers', 1)
     fc_dropout = kwargs.get('fc_dropout', 0)
     conv_dropout = kwargs.get('conv_dropout', False)
@@ -79,7 +81,7 @@ def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padd
     # TODO: change function for Sequentail model
     print('Creating model...')
     model = Sequential()
-    model.add(Embedding(10000, 100, input_length=maxlen))
+    model.add(Embedding(embeddings, embeddings_dim, input_length=maxlen))
     for layer in range(layers): 
         model = convolutional_layer_with_pooling(model=model,
                                                  filters=filters,
@@ -104,6 +106,6 @@ def build_convolutional_model(filters: int, kernel_size: Union[int, tuple], padd
                   loss="binary_crossentropy",
                   metrics=['acc', metrics.binary_accuracy])
     print('Model Compiled Properly!')
- 
+    return model 
 
 

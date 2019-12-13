@@ -11,6 +11,7 @@ import numpy as np
 import argparse
 from sklearn.utils import class_weight
 import json
+import pickle
 
 parser = argparse.ArgumentParser()
 feature_parser = parser.add_mutually_exclusive_group(required=False)
@@ -21,40 +22,48 @@ parser.set_defaults(save=True)
 args = parser.parse_args()
 
 if __name__ == '__main__':
-    with open('data/key_word_map.json', 'r') as json_file:
-        key_word_map = json.loads(json_file.read())
-
+    with open('data/key_word_map.pkl', 'rb') as f:
+        key_word_map = pickle.load(f)
     pipeline = Pipeline([
         ("preprocessor", SmsPreprocessor()),
         ("tokenizer", Tokenizer(key_word_map=key_word_map))
     ])
     text = ['Press this button to win 500 dollats', 'I will be late today. Do not wait for me honey',
-            'Have you always dreamd about muscles? Click this advert!',
-            'REMINDER FROM O2: To get 2.50 pounds free call credit and details of great offers pls reply 2 this text with your valid name, house no and postcode']
-    model = load_model('data/models_data/model_1.json', 'data/models_data/model_weights_1.h5')
+            'REMINDER FROM O2: To get 2.50 pounds free call credit and details of great offers pls' 
+            'reply 2 this text with your valid name, house no and postcode',
+            'To earn 1000 dollars send your valid name']
+    model = load_model('data/models_data/model_2.json', 'data/models_data/model_weights_2.h5')
     predict(text, model, pipeline)
 
+
+    #loader = DataLoader('data/sms_data')       
+    #sms_data = loader.sms_data
+    #labels = loader.labels  
 
     #class_weight = class_weight.compute_class_weight('balanced',
     #                                                 np.unique(labels),
     #                                                 labels)
 
-    #model = build_convolutional_model(filters=32, kernel_size=3, padding="valid", strides=1, data_format=None,
-    #                                  classes=2, layers=3, fc=True, fc_dropout=0.5, pooling='max', pool_size=2)
-    # TODO: add parameters to the function instead of hard coded
+    #tokenized, _ = pipeline.transform(sms_data)
+
+    #model = build_convolutional_model(filters=32, kernel_size=3, padding="valid", strides=1, 
+    #                                  data_format=None, classes=2, layers=3, fc=True, fc_dropout=0.5, 
+    #                                  pooling='max', pool_size=2)
+    #print(model.summary())    
+
     #model = train_model(model=model, 
     #                    X=tokenized,
     #                    y=labels, 
     #                    save_model=args.save, 
-    #                    model_path='model_1.json',
-    #                    weights_path='model_weights_1.h5',
+    #                    model_path='model_2.json',
+    #                    weights_path='model_weights_2.h5',
     #                    epochs=4,
     #                    batch_size=16,
     #                    class_weight=class_weight,
     #                    conv_dropout=True,
     #                    shuffle_data=True)
-    #
-    #del model
+    
+    
     
     #predict(["I will be at home home around 5pm"], model, pipeline)
     

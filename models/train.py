@@ -23,7 +23,7 @@ def train_model(model, X, y, save_model, shuffle_data=True, **kwargs):
     model_path = kwargs.get('model_path', 'model_json.json')
     weights_path = kwargs.get('weights_path', 'model_weights.h5')
 
-    data_path = os.path.abspath('data')
+    data_path = os.path.abspath('data/models_data')
     model_path = os.path.join(data_path, model_path)
     weights_path = os.path.join(data_path, weights_path)
 
