@@ -15,10 +15,7 @@ def create_pipeline(key_word_path=None, save_path=None):
         try:
             with open(key_word_path, 'rb') as f:
                 key_word_map = pickle.load(f)
-                print(len(key_word_map))
         except IOError as e:
-            print(e)
-            exit(0)
             logger.error("No such file!")
             logger.error("Creating pipeline without pre defined key_word_map!")
             key_word_map = None
