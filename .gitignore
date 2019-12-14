@@ -6,5 +6,6 @@ tags
 .idea/
 venv/
 data/key_word_map.*
+data/key_word_map_new_data.pkl
 data/models_data/
 
