@@ -26,8 +26,7 @@ class Tokenizer(BaseEstimator, TransformerMixin):
         tokenized = []
         # TODO: change type of initing key_word_map
         if self.key_word_map is None:
-            if self.save_path:
-                self.key_word_map = self.create_key_word_dict(text, self.save_path)
+            self.key_word_map = self.create_key_word_dict(text, self.save_path)
         if isinstance(text, str):
             for word in text.split():
                 if word in self.key_word_map.keys():
@@ -56,10 +55,6 @@ class Tokenizer(BaseEstimator, TransformerMixin):
             # TODO: change function
             tokenized_text = np.asarray(tokenized_text, dtype=np.float32)
             tokenized.append(tokenized_text)
-        if self.save_path is not None:
-            with open(self.save_path, 'w') as json_file:
-                key_word = json.dumps(self.key_word_map)
-                json_file.write(key_word)
         return np.asarray(tokenized), self.key_word_map
 
     @staticmethod
@@ -83,7 +78,7 @@ class Tokenizer(BaseEstimator, TransformerMixin):
         # TODO: think about unknows
         key_word_map["<unk>"] = i
         if save_path:
-            assert (save_path[-3:] == 'pkl'),"At the moment You can only save files with pickle(.pkl) extension" 
+            assert (save_path[-3:] == 'pkl'), "At the moment You can only save files with pickle(.pkl) extension"
             
             with open(save_path, 'wb') as f:
                 pickle.dump(key_word_map, f) 
