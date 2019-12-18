@@ -26,20 +26,21 @@ parser.set_defaults(save=True)
 args = parser.parse_args()
 
 if __name__ == '__main__':
-    loader = DataLoader('data/sms_data')
-    pipeline = create_pipeline(key_word_path="data/key_word_map_new_data.pkl")
+    #loader = DataLoader('data/sms_data')
+    pipeline = create_pipeline(key_word_path="data/pickled/key_word_map_new_data_1.pkl")
 
     text = ['Press this button to win 500 dollars', 'I will be late today. Do not wait for me honey',
             'REMINDER FROM O2: To get 2.50 pounds free call credit and details of great offers pls' 
             'reply 2 this text with your valid name, house no and postcode',
             'To earn 1000 dollars send your valid name',
             'If you want to win a car send your vaild email']
-
+    """
     class_weight = class_weight.compute_class_weight('balanced',
                                                      np.unique(loader.labels),
                                                      loader.labels)
+    """
     # this class wieghts have better accuracy than the one computed with sklearn
-    # class_weight = [1., 1.5]
+    class_weight = [1., 1.5]
     """
     tokenized, key_word_map = pipeline.fit_transform(loader.sms_data)
 
@@ -51,14 +52,13 @@ if __name__ == '__main__':
                         X=tokenized,
                         y=loader.labels,
                         save_model=args.save,
-                        model_path='model_conv_drop_false_3_new_data.json',
-                        weights_path='model_weights_conv_drop_false_3_new_data.h5',
+                        model_path='model_conv_drop_false_15_new_data_1.json',
+                        weights_path='model_weights_conv_drop_false_15_new_data_1.h5',
                         epochs=4,
                         batch_size=16,
                         class_weight=class_weight,
                         shuffle_data=True)
     """
-    model = load_model('data/models_data/model_conv_drop_false_3_new_data.json', 'data/models_data/model_weights_conv_drop_false_3_new_data.h5')
-    predict(text, model, pipeline)
+    model = load_model('data/models_data/model_conv_drop_false_15_new_data_1.json', 'data/models_data/model_weights_conv_drop_false_15_new_data_1.h5')
+    predict(text, model, pipeline)    
 
-    # TODO: change pipeline, sae key_wor_map to the file
