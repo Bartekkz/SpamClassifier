@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <div class="ml_container">
+        <form action="{{ url_for('predict_message')}}" method="post">
+            <p>Enter Your message</p>
+            <textarea name="message" rows="5" cols="50"></textarea>
+        <input type="submit" class="btn-info" value="predict">
+        </form>
+
+        {% if prediction > 0.5%}
+            <p style="color:red"><u>SPAM!</u></p>
+        {% else %}
+            <p style="color:cornflowerblue"><u>HAM!</u></p>
+        {% endif %}
+
+    </div>
+</body>
+</html>
