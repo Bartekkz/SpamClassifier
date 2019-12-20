@@ -4,11 +4,9 @@ from utils.tokenizer import Tokenizer
 
 import pickle
 import logging
-import gzip
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-import os
 
 def create_pipeline(key_word_path=None, save_path=None):
     if key_word_path is not None:

@@ -1,14 +1,9 @@
 #!/usr/bin/env python3
 from tensorflow.keras.models import model_from_json
 from tensorflow.keras import metrics
-from sklearn.pipeline import Pipeline 
 import numpy as np
-import json
 import sys
 sys.path.append('..')
-
-from utils.sms_preprocessor import SmsPreprocessor
-from utils.tokenizer import Tokenizer
 
 
 def load_model(arch_path, weights_path):
@@ -26,18 +21,12 @@ def load_model(arch_path, weights_path):
 
 def predict(sms, model, pipeline):
     tokenized, _ = pipeline.transform(sms)
-    print('\n' * 2)
-    i = 0 
+    preds = []
     for msg in tokenized:
         msg = np.expand_dims(msg, axis=0)
         prediction = model.predict(msg)
-        print(prediction[0][0])
-        if prediction[0][0] >= 0.5:
-            prettify_print('SPAM!', sms[i])
-        else:
-            prettify_print('HAM!', sms[i])
-        i += 1 
-    print('\n' * 2)
+        preds.append(prediction)
+    return preds
 
 
 def prettify_print(text, original):
