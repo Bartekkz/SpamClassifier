@@ -6,25 +6,13 @@
     <title>Home</title>
 </head>
 <body>
-    <h2 class="title">Test IF the message is a spam or a ham</h2>
-    <div class="ml_container center">
-        <form action="{{ url_for('predict_message')}}" method="post">
-            <p>Enter Your message</p>
-            <textarea name="message" rows="5" cols="50"></textarea>
-        </form>
-        <div class="btn-info">
-        <input type="submit" class="button" value="predict">
+   <div id="wrapper">
+		<form action="{{ url_for('predict_message')}}" method="post">
+		<textarea placeholder="Enter something funny." id="text" name="text" rows="4" style="overflow: hidden; word-wrap: break-word; resize: none; height: 160px; "></textarea>
+		<br>
+		<input id="button" type="submit" value="Create">
 
-        {% if prediction %}
-            {% if prediction > 0.5%}
-                <p style="color:red"><u>SPAM!</u></p>
-            {% else %}
-                <p style="color:cornflowerblue"><u>HAM!</u></p>
-            {% endif %}
-        {% else %}
-            <p></p>
-        {% endif %}
-        </div>
-    </div>
+	</form>
+</div>
 </body>
 </html>
