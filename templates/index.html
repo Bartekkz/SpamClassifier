@@ -2,22 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}">
     <title>Home</title>
 </head>
 <body>
-    <div class="ml_container">
+    <h2 class="title">Test IF the message is a spam or a ham</h2>
+    <div class="ml_container center">
         <form action="{{ url_for('predict_message')}}" method="post">
             <p>Enter Your message</p>
             <textarea name="message" rows="5" cols="50"></textarea>
-        <input type="submit" class="btn-info" value="predict">
         </form>
+        <div class="btn-info">
+        <input type="submit" class="button" value="predict">
 
-        {% if prediction > 0.5%}
-            <p style="color:red"><u>SPAM!</u></p>
+        {% if prediction %}
+            {% if prediction > 0.5%}
+                <p style="color:red"><u>SPAM!</u></p>
+            {% else %}
+                <p style="color:cornflowerblue"><u>HAM!</u></p>
+            {% endif %}
         {% else %}
-            <p style="color:cornflowerblue"><u>HAM!</u></p>
+            <p></p>
         {% endif %}
-
+        </div>
     </div>
 </body>
 </html>
