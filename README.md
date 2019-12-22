@@ -11,6 +11,25 @@ This project is based on paper "Convolutional Neural Network based SMS Spam Dete
 
 Then I will try with diffrent architecture.
 
+# Usage
+**not required
+## Docker(easier)
+If You have docker installed on Your machine there is no much You have to do :)  
+1) docker build -t [CONTAINER_NAME] [PATH_TO_DOCKERFILE](if it is in Your current directory use ".")  
+2) docker run [CONTAINER_NAME]  
+3) By deafault Your docker should run on 172.17.0.2:4000. But If it is not working You have to check  
+it by using some additinal commands  
+4) docker ps -> check Your's container name (they are random generated, last column) **
+5) docker inspect (name from previous command)  **
+6) find "IPadress". It should be something like 172.17.0.* **
+7) Now You just need to paste this IP with proper port (4000 by default) in Your browser **
+
+## Without Docker(python3, virtualenv recommended) 
+1) git clone https://github.com/Bartekkz/SpamClassifier.git
+2) cd SpamClassifier
+1) pip3 install -r requirements
+2) python3 app.py
+3) by default app should start on http:0.0.0.0:4000, so just go to Your browser and paste this URL
 # Model classification examples
 ## Note
 This particualar model was trained on expanded dataset (added something like 5 or 6 more spam examples to dataset, cause I think 
