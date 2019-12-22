@@ -8,7 +8,7 @@
 <body>
    <div id="wrapper">
 		<form action="{{ url_for('predict_message')}}" method="post">
-			<textarea id="text" placeholder="Enter sms text." name="message" rows="4"></textarea>
+			<textarea id="text" placeholder="Enter some text. e.g. Hello" name="message" rows="4"></textarea>
 			<br>
 			<div id="predict_button">
 				<input id="button" type="submit" value="Predict">
@@ -18,9 +18,9 @@
 	<div id="prediction">
 		{% if prediction %}
 			{% if prediction > 0.5 %}
-				<p style="color:red"><u>SPAM!</u></p>
+				<p style="color:red"> SPAM!</p>
 			{% else %}
-				<p style="color:darkcyan"><u>HAM!</u></p>
+				<p style="color:cornflowerblue"> HAM!</p>
 			{% endif %}
 		{% else %}
 			<p></p>
