@@ -13,12 +13,11 @@ textarea {
 	overflow: hidden;
 	word-wrap: break-word;
 	resize: none;
-	height: 160px;
 }
 
 #paper {
 	color:#FFF;
-	font-size:20px;
+	font-size:2.0em;
 }
 #margin {
 	margin-left:12px;
@@ -30,13 +29,13 @@ textarea {
 	user-select: none;
 }
 #text {
-	width:500px;
+	width:28%;
 	overflow:hidden;
 	background-color:#FFF;
 	color:#222;
 	font-family:Courier, monospace;
 	font-weight:normal;
-	font-size:24px;
+	font-size:1.5em;
 	resize:none;
 	line-height:40px;
 	padding-left:100px;
@@ -109,3 +108,54 @@ textarea {
     padding-top: 2%;
 }
 
+@media only screen and (max-width: 700px){
+	#text {
+		font-size: 0.9em;
+		width: 70%;
+        padding-right: 2%;
+	}
+    #button {
+		width: 30%;
+	}
+	#predict_button {
+		padding-top: 7%;
+		padding-left: 3%;
+	}
+    #prediction {
+		font-size: 6.5em;
+        padding-left: 3%;
+		padding-top: 7%;
+	}
+}
+
+@media only screen and (min-width: 701px)  and (max-width: 800px){
+	#text {
+		width: 70%;
+	}
+	#button {
+		width: 25%;
+	}
+	#predict_button {
+		padding-top: 2%;
+	}
+	#prediction {
+		font-size: 9.5em;
+        padding-top: 10%;
+	}
+}
+
+
+@media only screen and (min-width: 801px)  and (max-width: 1100px){
+	#text {
+		width: 50%;
+	}
+	#button {
+		width: 10%;
+	}
+}
+
+@media only screen and (min-width: 1101px) and (max-width: 1400px) {
+	#text {
+		width: 40%;
+	}
+}
