@@ -13,7 +13,7 @@ Then I will try with diffrent architecture.
 
 # Usage
 **not required
-## Docker(easier)
+## Docker
 If You have docker installed on Your machine there is no much You have to do :)  
 1) docker build -t [CONTAINER_NAME] [PATH_TO_DOCKERFILE](if it is in Your current directory use ".")  
 2) docker run [CONTAINER_NAME]  
