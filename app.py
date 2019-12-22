@@ -4,6 +4,7 @@ from models.utils import load_model, predict
 from utils.helper_functions import create_pipeline
 
 import json
+import logging
 
 
 # init flask app instance
@@ -23,8 +24,8 @@ def predict_message():
         try:
             prediction = predict(message, model, pipeline)
             return render_template("index.html", prediction=prediction[0][0])
-        except AttributeError as e:
-            return json.dumps(e)
+        except IndexError as e:
+            logging.critical(e)
     return render_template("index.html")
 
 
