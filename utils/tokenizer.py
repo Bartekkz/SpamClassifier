@@ -100,15 +100,11 @@ class Tokenizer(BaseEstimator, TransformerMixin):
         return padded_seq
 
     def transform(self, X, y=None):
-        print('Tokenizing...')
         tokenized, key_word_map = self.tokenize(X)
         # TODO: check if this code has any sense or need to change it
-        print('Tokenized!')
         if self.pad_sequences:
             padded = Tokenizer.pad_seq(tokenized, maxlen=self.maxlen, padding=self.padding)
-            print('Finished')
             return padded, key_word_map
-        print('Finished!')
         return tokenized, key_word_map
 
     def fit(self, X, y=None):
