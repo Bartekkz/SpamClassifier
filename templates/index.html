@@ -8,11 +8,23 @@
 <body>
    <div id="wrapper">
 		<form action="{{ url_for('predict_message')}}" method="post">
-		<textarea placeholder="Enter something funny." id="text" name="text" rows="4" style="overflow: hidden; word-wrap: break-word; resize: none; height: 160px; "></textarea>
-		<br>
-		<input id="button" type="submit" value="Create">
-
-	</form>
-</div>
+			<textarea id="text" placeholder="Enter sms text." name="message" rows="4"></textarea>
+			<br>
+			<div id="predict_button">
+				<input id="button" type="submit" value="Predict">
+			</div>
+		</form>
+	</div>
+	<div id="prediction">
+		{% if prediction %}
+			{% if prediction > 0.5 %}
+				<p style="color:red"><u>SPAM!</u></p>
+			{% else %}
+				<p style="color:darkcyan"><u>HAM!</u></p>
+			{% endif %}
+		{% else %}
+			<p></p>
+		{% endif %}
+	</div>
 </body>
 </html>
