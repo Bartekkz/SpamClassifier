@@ -3,7 +3,6 @@ from flask import Flask, render_template, url_for, request
 from models.utils import load_model, predict
 from utils.helper_functions import create_pipeline
 
-import json
 import logging
 
 
@@ -30,7 +29,7 @@ def predict_message():
 
 
 if __name__ == '__main__':
-    model = load_model("./data/models_data/model_conv_drop_false_1_5_new_data.json",
-                       "./data/models_data/model_weights_conv_drop_false_1_5_new_data.h5")
-    pipeline = create_pipeline(key_word_path="data/key_word_map_new_data.pkl")
-    app.run(debug=True, port=4000)
+    model = load_model("./data/models_data/model_conv_drop_false_15_new_data_1.json",
+                       "./data/models_data/model_weights_conv_drop_false_15_new_data_1.h5")
+    pipeline = create_pipeline(key_word_path="data/pickled/key_word_map_new_data_1.pkl")
+    app.run(debug=True, port=4000, host="0.0.0.0")
